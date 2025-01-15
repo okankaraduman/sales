@@ -44,7 +44,6 @@ server = app.server
 app.layout = html.Div([
     html.H1(children='Monthly Sales Data and Predictions'),
     dash_table.DataTable(data=df_combined.to_dict('records'), page_size=12),
-    html.Button('Send Email', id='send-email-button', n_clicks=0),
     dcc.Graph(figure=px.line(df_combined, x='year_month', y='sales', color='type', title='Sales Data and Predictions')),
 ])
 
