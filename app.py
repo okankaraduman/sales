@@ -43,39 +43,9 @@ app = Dash()
 app.layout = html.Div([
     html.H1(children='Monthly Sales Data and Predictions'),
     dash_table.DataTable(data=df_combined.to_dict('records'), page_size=12),
-    dcc.Graph(figure=px.line(df_combined, x='year_month', y='sales', color='type', title='Sales Data and Predictions')),
     html.Button('Send Email', id='send-email-button', n_clicks=0),
-    html.Div(id='email-status')
+    dcc.Graph(figure=px.line(df_combined, x='year_month', y='sales', color='type', title='Sales Data and Predictions')),
 ])
-
-@app.callback(
-    Output('email-status', 'children'),
-    Input('send-email-button', 'n_clicks')
-)
-
-def send_email(n_clicks):
-    if n_clicks > 0:
-        try:
-            # Create the email content
-            msg = MIMEMultipart()
-            msg['From'] = EMAIL_USER
-            msg['To'] = EMAIL_RECEIVER
-            msg['Subject'] = 'Monthly Sales Data and Predictions'
-            body = 'Please find the attached monthly sales data and predictions.'
-            msg.attach(MIMEText(body, 'plain'))
-
-            # Send the email
-            server = smtplib.SMTP('smtp.gmail.com', 587)
-            server.starttls()
-            server.login(EMAIL_USER, EMAIL_PASSWORD)
-            text = msg.as_string()
-            server.sendmail(EMAIL_USER, EMAIL_RECEIVER, text)
-            server.quit()
-
-            return 'Email sent successfully!'
-        except Exception as e:
-            return f'Failed to send email: {str(e)}'
-    return ''
 
 
 # Run the app
