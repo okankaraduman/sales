@@ -38,6 +38,7 @@ df_combined = pd.concat([df_existing, df_predictions])
 
 # Initialize the app
 app = Dash(__name__, url_base_pathname='/dashboard/')
+server = app.server
 
 # App layout
 app.layout = html.Div([
